@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if user.id == blog.author.id %}
+            <h4 class="mt-4">Delete "{{ blog.name }}"</h4>
+            <form method="post" class="mt3">
+                {% csrf_token %}
+                <b>Are you sure you want to delete "{{ blog.name }}" ?</b><br>
+                <button type="submit" class="btn btn-danger mt-3">Delete blog</button>
+            </form>
+        {% else %}
+            <b class="text-danger">You are not allowed her...</b>
+        {% endif %}
+    {% else %}
+        <b class="text-danger">You are not allowed her...</b>
+    {% endif %}
+{% endblock content %}

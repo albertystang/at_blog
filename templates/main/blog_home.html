@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Home page{% endblock title %}
+
+{% block content %}
+    <h1 class="blue_color mt-3">Blog Home</h1>
+    <div class="my-2">          
+        <div class="row">
+            {% if object_list %}
+                {% for blog in object_list %}  
+                    <div class="col-sm-6 mt-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">{{ blog.name }}</h5>
+                                <span class="badge bg-success">{{ blog.author }}</span>                        
+                                <p class="card-text">{{ blog.mini_description|truncatechars:200 }}</p>
+                                <a href="{% url 'blog_detail' blog.slug %}" class="btn btn-primary">Read More</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="alert alert-info" role="alert">
+                    There is no blog at the moment.
+                </div>
+            {% endif %}       
+        </div>        
+    </div>
+{% endblock content %}

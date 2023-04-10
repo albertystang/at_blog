@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block title %}Blog detail{% endblock title %}
+
+{% block content %}
+    <dev class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <h2>{{ blog.name }}</h2>
+                <span>Author: {{blog.author}}</span>
+                <div>
+                    <small>{{ blog.post_date }}</small>
+                </div>
+                <div>
+                    {% if user.is_authenticated %}
+                        {% if user.id == blog.author.id %}                            
+                            <a class="btn btn-sm btn-info" href="{% url 'update_blog' blog.id %}">
+                                <i class="fa-solid fa-pen-to-square"></i> Edit Blog
+                            </a>
+                            <a class="btn btn-sm btn-danger" href="{% url 'delete_blog' blog.id %}">
+                                <i class="fa-solid fa-trash"></i> Delete Blog
+                            </a>
+                        {% endif %}                        
+                    {% endif %}
+                </div> 
+            
+                <div>
+                    <p>{{ blog.description|safe }}</p>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <ul class="list-group">
+                    {% for blog in blogs %}
+                        <a href="{% url 'blog_detail' blog.slug %}">
+                            <li class="list-group-item">{{ blog.name }}</li>
+                        </a>
+                    {% endfor %}
+                </ul>
+            </div>           
+        </div>
+
+        <hr>
+        <div class="mt-5">
+            <h4>Comments posted | {{ comments.count }} comments</h4>          
+            {% for comment in comments %}
+                <div class="card mt-2 mb-2">
+                    <div class="card-header">
+                        {{ comment.author }} <br>
+                        {{ comment.comment_date| timesince }} ago
+                    </div>
+
+                    <div class="card-body">
+                        <blockquote class="blockquote mt-2">
+                            <p>{{ comment.description }}</p>
+                        </blockquote>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>        
+       
+        <div class="mt-3"> 
+            <h4 class="mt-4 mb-3"><b>You may write your comment in below...</b></h4>
+        </div>
+        {% if user.is_authenticated %}
+            {% if blog.author.id == user.id %}
+                <div class="alert alert-info mt-2" role="alert">
+                    <p>You cannot make comment on your own blog.</P>                    
+                </div>
+            {% else %}
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button type="submit" class="btn btn-success mt-2">Post comment</button>
+                </form>
+            {% endif %}        
+        {% else %}
+            <div class="alert alert-danger mt-2" role="alert">
+                <p>Please log in to make comment!</P>
+                <a href="{% url 'login' %}" class="btn btn-primary btn-sm">Login</a>
+            </div>
+        {% endif %}
+    </dev>
+{% endblock content %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign up{% endblock title %}
+
+{% block content %}
+    <br>
+    <h3><b>Sign up</b></h3>
+    <br>    
+    <form class="row g-3" method="post">
+        {% csrf_token %}
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">First Name</label>
+            {{ form.first_name }}
+        </div>
+        <div class="col-md-6">
+            <label for="inputPassword4" class="form-label">Last Name</label>
+            {{ form.last_name }}
+        </div>
+        <div class="col-6">
+            <label for="inputAddress" class="form-label">Username</label>
+            {{ form.username }}
+        </div>
+        <div class="col-6">
+            <label for="inputAddress2" class="form-label">Email</label>
+            {{ form.email }}
+        </div>
+        <div class="col-12">
+            <label for="password" class="form-label">Password</label>
+            {{ form.password1 }}
+        </div>
+        <div class="col-12">
+            <label for="confirm password" class="form-label">Confirm password</label>
+            {{ form.password2 }}
+        </div>        
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Sign up</button>
+        </div>
+    </form>        
+{% endblock content %}
